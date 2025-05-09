@@ -18,7 +18,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "hookbot"
 	app.Usage = "turn webhooks into websockets"
-	app.Version = "0.15.2"
+	app.Version = "0.16.0"
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
