@@ -19,7 +19,7 @@ func main() {
 	cmd := cli.Command{
 		Name:    "hookbot",
 		Usage:   "turn webhooks into websockets",
-		Version: "0.16.0",
+		Version: "0.17.0",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "key",
