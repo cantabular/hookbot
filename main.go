@@ -42,17 +42,20 @@ func main() {
 				Action: ActionServe,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "bind, b",
+						Name:  "bind",
+						Aliases: []string{"b"},
 						Value: ":8080",
 						Usage: "address to listen on",
 					},
 					&cli.StringFlag{
-						Name:  "sslkey, k",
+						Name:  "sslkey",
+						Aliases: []string{"k"},
 						Value: "<unset>",
 						Usage: "path to the SSL secret key",
 					},
 					&cli.StringFlag{
-						Name:  "sslcrt, c",
+						Name:  "sslcrt",
+						Aliases: []string{"c"},
 						Value: "<unset>",
 						Usage: "path to the SSL compound certificate",
 					},
@@ -73,7 +76,8 @@ func main() {
 						Usage: "print only tokens (not as basic-auth URLs)",
 					},
 					&cli.StringFlag{
-						Name:    "url-base, U",
+						Name:    "url-base",
+						Aliases: []string{"U"},
 						Value:   "http://localhost:8080",
 						Usage:   "base URL to generate for (not included in hmac)",
 						Sources: cli.EnvVars("HOOKBOT_URL_BASE"),
@@ -86,7 +90,8 @@ func main() {
 				Action: github.ActionRoute,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
-						Name:  "monitor-url, u",
+						Name:  "monitor-url",
+						Aliases: []string{"u"},
 						Usage: "URL to monitor",
 					},
 					&cli.StringFlag{
@@ -96,7 +101,8 @@ func main() {
 						Sources: cli.EnvVars("HOOKBOT_ORIGIN"),
 					},
 					&cli.StringSliceFlag{
-						Name:    "header, H",
+						Name:    "header",
+						Aliases: []string{"H"},
 						Usage:   "headers to pass to the remote",
 						Sources: cli.EnvVars("HOOKBOT_HEADER"),
 					},
