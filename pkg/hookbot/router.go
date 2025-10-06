@@ -3,7 +3,7 @@ package hookbot
 import (
 	"log"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 type Router interface {
@@ -18,7 +18,7 @@ func RegisterRouter(router Router) {
 	availableRouters = append(availableRouters, router)
 }
 
-func ConfigureRouters(c *cli.Context, h *Hookbot) {
+func ConfigureRouters(c *cli.Command, h *Hookbot) {
 	enabledRouters := map[string]struct{}{}
 
 	for _, r := range c.StringSlice("router") {
