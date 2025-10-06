@@ -2,6 +2,7 @@ package github
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -11,7 +12,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 
 	"github.com/sensiblecodeio/hookbot/pkg/hookbot"
 	"github.com/sensiblecodeio/hookbot/pkg/listen"
@@ -57,7 +58,7 @@ func MustMakeHeader(
 	return header
 }
 
-func ActionRoute(c *cli.Context) error {
+func ActionRoute(_ context.Context, c *cli.Command) error {
 
 	target, err := url.Parse(c.String("monitor-url"))
 	if err != nil {
