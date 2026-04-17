@@ -3,6 +3,7 @@ package github
 import (
 	"crypto/hmac"
 	"crypto/sha1"
+	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/json"
 	"fmt"
@@ -11,6 +12,12 @@ import (
 
 func Sha1HMAC(key string, payload []byte) string {
 	mac := hmac.New(sha1.New, []byte(key))
+	_, _ = mac.Write(payload)
+	return fmt.Sprintf("%x", mac.Sum(nil))
+}
+
+func Sha256HMAC(key string, payload []byte) string {
+	mac := hmac.New(sha256.New, []byte(key))
 	_, _ = mac.Write(payload)
 	return fmt.Sprintf("%x", mac.Sum(nil))
 }
@@ -39,7 +46,7 @@ func IsValidGithubSignature(secret string, message []byte) bool {
 	}
 
 	expected := m.Signature
-	got := fmt.Sprintf("sha1=%v", Sha1HMAC(secret, m.Payload))
+	got := fmt.Sprintf("sha256=%v", Sha256HMAC(secret, m.Payload))
 
 	log.Printf("Expected = %v got = %v", expected, got)
 
