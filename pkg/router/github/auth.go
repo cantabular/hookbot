@@ -2,19 +2,12 @@ package github
 
 import (
 	"crypto/hmac"
-	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/json"
 	"fmt"
 	"log"
 )
-
-func Sha1HMAC(key string, payload []byte) string {
-	mac := hmac.New(sha1.New, []byte(key))
-	_, _ = mac.Write(payload)
-	return fmt.Sprintf("%x", mac.Sum(nil))
-}
 
 func Sha256HMAC(key string, payload []byte) string {
 	mac := hmac.New(sha256.New, []byte(key))

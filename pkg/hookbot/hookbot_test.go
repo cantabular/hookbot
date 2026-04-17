@@ -13,7 +13,7 @@ func TestPubSub(t *testing.T) {
 		messages = hookbot.Add("test/topic").c
 
 		w, r := MakeRequest("POST", "/test/topic", "MESSAGE")
-		token := Sha1HMAC(TEST_KEY, "/test/topic")
+		token := Sha256HMAC(TEST_KEY, "/test/topic")
 		r.SetBasicAuth(token, "")
 
 		hookbot.ServeHTTP(w, r)

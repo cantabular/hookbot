@@ -2,7 +2,7 @@ package hookbot
 
 import (
 	"crypto/hmac"
-	"crypto/sha1"
+	"crypto/sha256"
 	"crypto/subtle"
 	"fmt"
 	"net/http"
@@ -10,8 +10,8 @@ import (
 	"strings"
 )
 
-func Sha1HMAC(key, payload string) string {
-	mac := hmac.New(sha1.New, []byte(key))
+func Sha256HMAC(key, payload string) string {
+	mac := hmac.New(sha256.New, []byte(key))
 	_, _ = mac.Write([]byte(payload))
 	return fmt.Sprintf("%x", mac.Sum(nil))
 }
@@ -67,14 +67,14 @@ func (h *Hookbot) IsKeyOK(w http.ResponseWriter, r *http.Request) bool {
 
 	// Try all subpaths and see if any of them matches the given MAC.
 	for _, subpath := range subpaths(r.URL.Path) {
-		expectedMac := Sha1HMAC(h.key, subpath)
+		expectedMac := Sha256HMAC(h.key, subpath)
 		if SecureEqual(givenMac, expectedMac) {
 			return true
 		}
 
 		// See if HMAC matches the URL without the {/pub,/sub} prefix.
 		// These tokens are valid for both pub and sub.
-		expectedMac = Sha1HMAC(h.key, noPrefix(subpath))
+		expectedMac = Sha256HMAC(h.key, noPrefix(subpath))
 		if SecureEqual(givenMac, expectedMac) {
 			return true
 		}
