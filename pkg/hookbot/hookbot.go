@@ -377,7 +377,7 @@ func (h *Hookbot) ServePublish(w http.ResponseWriter, r *http.Request) {
 		case "github":
 
 			body, err = json.Marshal(map[string]interface{}{
-				"Signature": r.Header.Get("X-Hub-Signature"),
+				"Signature": r.Header.Get("X-Hub-Signature-256"),
 				"Event":     r.Header.Get("X-GitHub-Event"),
 				"Delivery":  r.Header.Get("X-GitHub-Delivery"),
 				"Payload":   body,
