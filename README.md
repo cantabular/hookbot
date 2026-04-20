@@ -131,6 +131,13 @@ beginning with that prefix up to the `/`. For example a token valid for
 Query parameters (e.g, ``/foo?query-param`) and hostnames do not contribute to
 the MAC, only the path part of the URI.
 
+If your websockets client does not support HTTP authentication, you can pass the
+token as a parameter named "auth":
+
+```
+https://hookbot.scraperwiki.com/pub/foo/bar?auth=2e1150434ba1d8c33bce7c82ee08b5d9850342c7
+```
+
 Wider scope for publication keys
 --------------------------------
 
