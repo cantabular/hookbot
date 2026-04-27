@@ -159,7 +159,7 @@ func ActionMakeTokens(_ context.Context, c *cli.Command) error {
 			log.Fatalf("URL %q doesn't parse: %v", arg, err)
 		}
 
-		mac := hookbot.Sha1HMAC(key, argURL.Path)
+		mac := hookbot.Sha256HMAC(key, argURL.Path)
 		if c.Bool("bare") {
 			fmt.Println(mac)
 		} else {

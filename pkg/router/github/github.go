@@ -75,7 +75,7 @@ func ActionRoute(_ context.Context, c *cli.Command) error {
 	outbound := make(chan listen.Message, 1)
 
 	publish := func(m hookbot.Message) bool {
-		token := Sha1HMAC(c.String("key"), []byte(m.Topic))
+		token := Sha256HMAC(c.String("key"), []byte(m.Topic))
 
 		outURL := fmt.Sprintf("https://%v@%v/pub/%s", token, target.Host, m.Topic)
 

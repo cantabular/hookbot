@@ -42,7 +42,7 @@ func TestAuthMissingFail(t *testing.T) {
 func TestAuthInvalidSecret(t *testing.T) {
 	w, r := MakeRequest("POST", "/pub/", "MESSAGE")
 
-	token := Sha1HMAC(TEST_KEY, "/pub/not/the/same/as/above") // bad secret
+	token := Sha256HMAC(TEST_KEY, "/pub/not/the/same/as/above") // bad secret
 	r.SetBasicAuth(token, "")
 
 	func() {
@@ -61,7 +61,7 @@ func TestAuthInvalidSecret(t *testing.T) {
 func TestAuthSuccess(t *testing.T) {
 	w, r := MakeRequest("POST", "/pub/place", "MESSAGE")
 
-	token := Sha1HMAC(TEST_KEY, "/pub/place")
+	token := Sha256HMAC(TEST_KEY, "/pub/place")
 	r.SetBasicAuth(token, "")
 
 	func() {
@@ -80,7 +80,7 @@ func TestAuthSuccess(t *testing.T) {
 func TestAuthPubSub(t *testing.T) {
 
 	// Valid for both pub and sub, for lack of {/pub,/sub} prefix
-	token := Sha1HMAC(TEST_KEY, "/place")
+	token := Sha256HMAC(TEST_KEY, "/place")
 
 	w, r := MakeRequest("POST", "/pub/place", "MESSAGE")
 	r.SetBasicAuth(token, "")
@@ -118,7 +118,7 @@ func TestAuthPubSub(t *testing.T) {
 func TestAuthSuccessSubstring(t *testing.T) {
 	w, r := MakeRequest("POST", "/pub/place/sub/sub/sub", "MESSAGE")
 
-	token := Sha1HMAC(TEST_KEY, "/pub/place/")
+	token := Sha256HMAC(TEST_KEY, "/pub/place/")
 	r.SetBasicAuth(token, "")
 
 	func() {
@@ -138,7 +138,7 @@ func TestAuthSuccessSubstring(t *testing.T) {
 func TestAuthFailSubstring(t *testing.T) {
 	w, r := MakeRequest("POST", "/pub/post", "MESSAGE")
 
-	token := Sha1HMAC(TEST_KEY, "/pub/po")
+	token := Sha256HMAC(TEST_KEY, "/pub/po")
 	r.SetBasicAuth(token, "")
 
 	func() {
