@@ -3,7 +3,7 @@ on:
     tags:
     - 'v*'
 
-name: Upload Release Asset
+name: Publish releases
 
 jobs:
   build:
