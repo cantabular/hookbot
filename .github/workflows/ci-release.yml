@@ -3,12 +3,14 @@ on:
     tags:
     - 'v*'
 
-name: Upload Release Asset
+name: Publish releases
 
 jobs:
   build:
     name: Upload Release Asset
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -26,7 +28,7 @@ jobs:
           draft: true
           prerelease: false
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-release-asset
         uses: actions/upload-release-asset@ef2adfe8cb8ebfa540930c452c576b3819990faa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,3 +37,29 @@ jobs:
           asset_path: ./hookbot_linux_amd64
           asset_name: hookbot_linux_amd64
           asset_content_type: application/octet-stream
+
+  build_docker_image:
+    name: Build and push Docker image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Log in to GitHub Container Registry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_ACTOR: ${{ github.actor }}
+        run: echo "$GH_TOKEN" | docker login ghcr.io -u "$GH_ACTOR" --password-stdin
+
+      - name: Build and push Docker image
+        env:
+          REPO_NAME: ${{ github.repository }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          IMAGE_ID="ghcr.io/${REPO_NAME}"
+
+          docker build -t "$IMAGE_ID:$TAG_NAME" .
+          docker push "$IMAGE_ID:$TAG_NAME"
