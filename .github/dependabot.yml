@@ -3,10 +3,14 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/"
+    cooldown:
+      default-days: 7
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "github-actions"
     directory: "/"
+    cooldown:
+      default-days: 7
     schedule:
-      interval: "daily"
+      interval: "weekly"
