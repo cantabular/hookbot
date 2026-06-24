@@ -43,26 +43,31 @@ func (h *Hookbot) IsKeyOK(w http.ResponseWriter, r *http.Request) bool {
 	authorization := r.Header.Get("Authorization")
 	fields := strings.Fields(authorization)
 
-	if len(fields) != 2 {
-		return false
-	}
-
-	authType, givenKey := fields[0], fields[1]
-
 	var givenMac string
 
-	switch strings.ToLower(authType) {
-	default:
-		return false // Not understood
-	case "basic":
-		var ok bool
-		givenMac, _, ok = r.BasicAuth()
-		if !ok {
+	if len(fields) != 2 {
+		authParam := r.URL.Query()["auth"]
+		if len(authParam) != 1 {
 			return false
 		}
+		givenMac = authParam[0]
+	} else {
 
-	case "bearer":
-		givenMac = givenKey // No processing required
+		authType, givenKey := fields[0], fields[1]
+
+		switch strings.ToLower(authType) {
+		default:
+			return false // Not understood
+		case "basic":
+			var ok bool
+			givenMac, _, ok = r.BasicAuth()
+			if !ok {
+				return false
+			}
+
+		case "bearer":
+			givenMac = givenKey // No processing required
+		}
 	}
 
 	// Try all subpaths and see if any of them matches the given MAC.
