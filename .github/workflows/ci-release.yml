@@ -5,6 +5,9 @@ on:
 
 name: Publish releases
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Upload Release Asset
